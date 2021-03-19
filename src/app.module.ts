@@ -25,6 +25,7 @@ import { TagsModule } from './tags/tags.module';
         logging: true,
         logger: 'file',
         retryAttempts: 10,
+        ssl: configService.get('NODE_ENV') === 'production',
       }),
       inject: [ConfigService],
     }),
