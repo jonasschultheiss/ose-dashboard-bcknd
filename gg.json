@@ -1,0 +1,160 @@
+{
+  "id": 61236,
+  "serial_number": "N4033B05O00",
+  "last_seen_at": "2021-03-11T14:49:45.783Z",
+  "created_at": "2019-04-23T13:09:47.651Z",
+  "updated_at": "2021-03-11T14:49:45.959Z",
+  "production_date": "2018-04",
+  "status": {
+    "href": "https://api.iiot.endress.com/v1/asset/statuses/2",
+    "id": 2,
+    "code": "ok",
+    "name": "OK",
+    "description": "Status for an asset in normal condition",
+    "tenant": {
+      "id": 1,
+      "href": "https://api.iiot.endress.com/v1/tenants/1"
+    }
+  },
+  "product": {
+    "id": 6549,
+    "href": "https://api.iiot.endress.com/v1/products/6549",
+    "product_code": "COS81D",
+    "name": "Memosens COS81D",
+    "status": {
+      "id": 2,
+      "href": "https://api.iiot.endress.com/v1/products/6549/status"
+    },
+    "manufacturer": {
+      "id": 63,
+      "name": "Endress+Hauser",
+      "href": "https://api.iiot.endress.com/v1/companies/63",
+      "tenant": {
+        "id": 1,
+        "href": "https://api.iiot.endress.com/v1/tenants/1"
+      }
+    },
+    "tenant": {
+      "id": 1,
+      "href": "https://api.iiot.endress.com/v1/tenants/1"
+    },
+    "links": {
+      "categories": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/categories"
+      },
+      "documents": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/documents"
+      },
+      "quotations": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/quotations"
+      },
+      "purchase_orders": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/purchase_orders"
+      },
+      "pictures": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/pictures"
+      },
+      "specifications": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/specifications"
+      },
+      "health_conditions": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/health_conditions"
+      },
+      "edge_device_features": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/edge_device_features"
+      },
+      "softwares": {
+        "href": "https://api.iiot.endress.com/v1/products/6549/softwares"
+      }
+    }
+  },
+  "pictures": [],
+  "parent": {
+    "id": 61239,
+    "href": "https://api.iiot.endress.com/v1/assets/61239"
+  },
+  "instrumentations": {
+    "items": [
+      {
+        "id": 13060,
+        "tag": "DO - Tank",
+        "description": "connected via SGC400",
+        "criticality": "medium",
+        "accessibility": "moderate",
+        "status": {
+          "id": 1,
+          "href": "https://api.iiot.endress.com/v1/instrumentations/13060/status"
+        },
+        "type": {
+          "id": 6,
+          "href": "https://api.iiot.endress.com/v1/instrumentations/13060/type"
+        },
+        "parent": {
+          "id": 13054,
+          "href": "https://api.iiot.endress.com/v1/instrumentations/13054"
+        },
+        "worst_asset_status": {
+          "id": 2,
+          "href": "https://api.iiot.endress.com/v1/assets/2/status"
+        },
+        "links": {
+          "assets": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/assets"
+          },
+          "bill_of_materials": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/bill_of_materials"
+          },
+          "documents": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/documents"
+          },
+          "events": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/events"
+          },
+          "nodes": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/nodes"
+          },
+          "specifications": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/specifications"
+          },
+          "pictures": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/pictures"
+          },
+          "thresholds": {
+            "href": "https://api.iiot.endress.com/v1/instrumentations/13060/thresholds"
+          }
+        }
+      }
+    ],
+    "total_count": 1,
+    "href": "https://api.iiot.endress.com/v1/assets/61236/instrumentations"
+  },
+  "links": {
+    "documents": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/documents"
+    },
+    "events": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/events"
+    },
+    "instrumentations": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/instrumentations"
+    },
+    "nodes": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/nodes"
+    },
+    "specifications": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/specifications"
+    },
+    "pictures": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/pictures"
+    },
+    "subscriptions": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/subscriptions"
+    },
+    "health_conditions": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/health_conditions"
+    },
+    "softwares": {
+      "href": "https://api.iiot.endress.com/v1/assets/61236/softwares"
+    }
+  }
+}

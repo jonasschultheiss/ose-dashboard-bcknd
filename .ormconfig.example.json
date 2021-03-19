@@ -1,0 +1,17 @@
+{
+  "type": "postgres",
+  "url": "postgres://{username}:{password}@localhost:5432/{your-database}",
+  "entities": ["src/**/*.entity{.ts,.js}"],
+
+  "synchronize": false,
+
+  "migrationsRun": false,
+  "logging": true,
+  "logger": "file",
+  "retryAttempts": 10,
+
+  "migrations": ["dist/migrations/**/*{.ts,.js}"],
+  "cli": {
+    "migrationsDir": "src/migrations"
+  }
+}
