@@ -6,7 +6,7 @@ export default (): IConfiguration => ({
     url: process.env.NETILION_URL,
     authurl: process.env.NETILION_AUTHURL,
   },
-  databaseUrl: process.env.DB_URL,
+  databaseUrl: process.env.DATABASE_URL,
   redis: {
     ttl: parseInt(process.env.REDIS_TTL, 10),
     host: process.env.REDIS_HOST,
