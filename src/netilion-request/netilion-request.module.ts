@@ -12,8 +12,7 @@ import { OAuthService } from './oauth.service';
       useFactory: async (configService: ConfigService) => ({
         ttl: configService.get('redis.ttl'),
         store: redisStore,
-        host: configService.get('redis.host'),
-        port: configService.get('redis.port'),
+        url: configService.get('redis.url'),
       }),
       inject: [ConfigService],
     }),

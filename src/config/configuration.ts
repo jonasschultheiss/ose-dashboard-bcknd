@@ -9,8 +9,7 @@ export default (): IConfiguration => ({
   databaseUrl: process.env.DATABASE_URL,
   redis: {
     ttl: parseInt(process.env.REDIS_TTL, 10),
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT, 10),
+    url: process.env.REDIS_URL,
   },
   api: {
     authorization: process.env.API_AUTHORIZATION,
