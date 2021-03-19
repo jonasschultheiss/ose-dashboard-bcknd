@@ -17,7 +17,7 @@ import { TagsModule } from './tags/tags.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: `${configService.get('databaseUrl')}?sslmode=require`,
+        url: configService.get('databaseUrl'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         migrations: ['dist/migrations/**/*{.ts,.js}'],
         synchronize: false,
@@ -25,6 +25,7 @@ import { TagsModule } from './tags/tags.module';
         logging: true,
         logger: 'file',
         retryAttempts: 10,
+        ssl: configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : undefined,
       }),
       inject: [ConfigService],
     }),
