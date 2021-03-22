@@ -20,7 +20,7 @@ export class AssetsService {
     private readonly tagService: TagsService,
   ) {}
 
-  @Cron('30 * * * * *')
+  @Cron('*/15 * * * *')
   async handleCron() {
     const assets: NetilionResponseDto[] = await this.netilionRequestService.getAssets();
     assets.map((asset) => {
