@@ -5,7 +5,7 @@
 
   "synchronize": false,
 
-  "migrationsRun": false,
+  "migrationsRun": true,
   "logging": true,
   "logger": "file",
   "retryAttempts": 10,
