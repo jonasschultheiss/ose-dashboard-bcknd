@@ -12,7 +12,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "prestart:prod": "yarn typeorm:run",
+    "prestart:prod": "yarn typeorm:prod",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -23,6 +23,7 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config .ormconfig.json",
     "typeorm:migrate": "yarn typeorm migration:generate -n",
     "typeorm:run": "yarn typeorm migration:run",
+    "typeorm:prod": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run",
     "doc:build": "compodoc -p tsconfig.json -t docs --theme stripe",
     "doc:serve": "compodoc -p tsconfig.json -d docs -t --theme stripe -s"
   },
