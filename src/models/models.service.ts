@@ -18,7 +18,7 @@ export class ModelsService {
       client_id,
       client_secret,
       username,
-      password,
+      password
     };
     let token: IToken;
     try {
@@ -31,7 +31,7 @@ export class ModelsService {
     const requestCredentials: IRequestCredentials = {
       clientId: client_id,
       accessToken: token.accessToken,
-      tokenType: token.tokenType,
+      tokenType: token.tokenType
     };
 
     console.log('token', token);

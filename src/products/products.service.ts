@@ -7,7 +7,7 @@ import { ProductRepository } from './products.repository';
 export class ProductsService {
   constructor(
     @InjectRepository(ProductRepository)
-    private readonly productRepository: ProductRepository,
+    private readonly productRepository: ProductRepository
   ) {}
 
   async getOrCreateProduct(productDto: ProductDto) {

@@ -17,13 +17,13 @@ export class AssetsService {
     private readonly netilionRequestService: NetilionRequestService,
     private readonly statusService: StatusService,
     private readonly productService: ProductsService,
-    private readonly tagService: TagsService,
+    private readonly tagService: TagsService
   ) {}
 
-  @Cron('*/15 * * * *')
+  @Cron('30 * * * * *')
   async handleCron() {
     const assets: NetilionResponseDto[] = await this.netilionRequestService.getAssets();
-    assets.map((asset) => {
+    assets.map(asset => {
       this.createOrUpdateAsset(asset);
     });
   }

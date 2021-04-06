@@ -25,9 +25,9 @@ import { TagsModule } from './tags/tags.module';
         logging: true,
         logger: 'file',
         retryAttempts: 10,
-        ssl: configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : undefined,
+        ssl: configService.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : undefined
       }),
-      inject: [ConfigService],
+      inject: [ConfigService]
     }),
     ScheduleModule.forRoot(),
     AssetsModule,
@@ -35,9 +35,9 @@ import { TagsModule } from './tags/tags.module';
     StatusModule,
     TagsModule,
     ModelsModule,
-    NetilionRequestModule,
+    NetilionRequestModule
   ],
   controllers: [],
-  providers: [],
+  providers: []
 })
 export class AppModule {}

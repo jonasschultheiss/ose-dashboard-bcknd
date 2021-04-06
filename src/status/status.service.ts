@@ -7,7 +7,7 @@ import { StatusRepository } from './status.repository';
 export class StatusService {
   constructor(
     @InjectRepository(StatusRepository)
-    private readonly statusRepository: StatusRepository,
+    private readonly statusRepository: StatusRepository
   ) {}
 
   async getOrCreateStatus(statusDto: StatusDto) {

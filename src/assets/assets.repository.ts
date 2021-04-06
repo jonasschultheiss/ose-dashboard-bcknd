@@ -13,7 +13,7 @@ export class AssetsRepository extends Repository<Asset> {
     netilionResponseDto: NetilionResponseDto,
     status: Status,
     product: Product,
-    tag: Tag,
+    tag: Tag
   ): Promise<Asset> {
     const { id, serial_number, production_date, last_seen_at } = netilionResponseDto;
     const months = getMonths();
@@ -23,7 +23,7 @@ export class AssetsRepository extends Repository<Asset> {
     asset.productionDate = null;
     if (production_date) {
       asset.productionDate = `${months[new Date(production_date).getMonth()]} ${new Date(
-        production_date,
+        production_date
       ).getFullYear()}`;
     }
 
@@ -47,7 +47,7 @@ export class AssetsRepository extends Repository<Asset> {
     netilionResponseDto: NetilionResponseDto,
     status: Status,
     product: Product,
-    tag: Tag,
+    tag: Tag
   ): Promise<Asset> {
     const { id, serial_number, production_date, last_seen_at } = netilionResponseDto;
     const asset = await this.findOne(id);

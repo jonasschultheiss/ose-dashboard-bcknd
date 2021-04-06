@@ -6,6 +6,6 @@ import { ModelsService } from './models.service';
 @Module({
   imports: [NetilionRequestModule],
   controllers: [ModelsController],
-  providers: [ModelsService],
+  providers: [ModelsService]
 })
 export class ModelsModule {}

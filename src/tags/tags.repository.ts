@@ -13,7 +13,7 @@ export class TagRepository extends Repository<Tag> {
       name: tag,
       description: description,
       criticality: criticality,
-      accessibility: accessibility,
+      accessibility: accessibility
     };
   }
 

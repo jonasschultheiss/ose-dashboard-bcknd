@@ -14,9 +14,9 @@ import { AssetsService } from './assets.service';
     NetilionRequestModule,
     StatusModule,
     ProductsModule,
-    TagsModule,
+    TagsModule
   ],
   controllers: [AssetsController],
-  providers: [AssetsService],
+  providers: [AssetsService]
 })
 export class AssetsModule {}

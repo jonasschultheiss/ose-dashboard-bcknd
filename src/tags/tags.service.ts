@@ -7,7 +7,7 @@ import { TagRepository } from './tags.repository';
 export class TagsService {
   constructor(
     @InjectRepository(TagRepository)
-    private readonly tagRepository: TagRepository,
+    private readonly tagRepository: TagRepository
   ) {}
 
   async getOrCreateTag(tagDto: TagDto) {

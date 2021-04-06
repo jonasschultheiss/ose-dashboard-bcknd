@@ -16,6 +16,6 @@ export class Product extends BaseEntity {
   @Column()
   manufacturer: string;
 
-  @OneToMany(() => Asset, (asset) => asset.product)
+  @OneToMany(() => Asset, asset => asset.product)
   assets: Asset[];
 }

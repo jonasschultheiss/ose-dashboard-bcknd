@@ -11,6 +11,6 @@ export default function getMonths(): string[] {
     'September',
     'October',
     'November',
-    'December',
+    'December'
   ];
 }

@@ -16,6 +16,6 @@ export class Status extends BaseEntity {
   @Column()
   description: string;
 
-  @OneToMany(() => Asset, (asset) => asset.status)
+  @OneToMany(() => Asset, asset => asset.status)
   assets: Asset[];
 }

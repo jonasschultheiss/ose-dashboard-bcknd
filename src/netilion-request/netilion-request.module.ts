@@ -12,12 +12,12 @@ import { OAuthService } from './oauth.service';
       useFactory: async (configService: ConfigService) => ({
         ttl: configService.get('redis.ttl'),
         store: redisStore,
-        url: configService.get('redis.url'),
+        url: configService.get('redis.url')
       }),
-      inject: [ConfigService],
-    }),
+      inject: [ConfigService]
+    })
   ],
   providers: [OAuthService, NetilionRequestService],
-  exports: [OAuthService, NetilionRequestService],
+  exports: [OAuthService, NetilionRequestService]
 })
 export class NetilionRequestModule {}

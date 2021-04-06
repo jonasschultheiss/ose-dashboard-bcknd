@@ -18,15 +18,15 @@ export class Asset extends BaseEntity {
   @Column({ nullable: true })
   lastSeen: string;
 
-  @ManyToOne(() => Status, (status) => status.assets, { eager: true })
+  @ManyToOne(() => Status, status => status.assets, { eager: true })
   @JoinTable()
   status: Status;
 
-  @ManyToOne(() => Product, (product) => product.assets, { eager: true })
+  @ManyToOne(() => Product, product => product.assets, { eager: true })
   @JoinTable()
   product: Product;
 
-  @ManyToOne(() => Tag, (tag) => tag.assets, { eager: true })
+  @ManyToOne(() => Tag, tag => tag.assets, { eager: true })
   @JoinTable()
   tag: Tag;
 }

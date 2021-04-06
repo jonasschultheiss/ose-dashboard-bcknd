@@ -19,6 +19,6 @@ export class Tag extends BaseEntity {
   @Column({ nullable: true })
   criticality: string;
 
-  @OneToMany(() => Asset, (asset) => asset.status)
+  @OneToMany(() => Asset, asset => asset.status)
   assets: Asset[];
 }

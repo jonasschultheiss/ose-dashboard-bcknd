@@ -37,9 +37,9 @@ export class OAuthService {
       method: 'post',
       url: `${url}/oauth/token`,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      params: { ...credentials, grant_type: 'password' },
+      params: { ...credentials, grant_type: 'password' }
     });
 
     return this.parseToken(res.data);
@@ -53,7 +53,7 @@ export class OAuthService {
       accessToken: access_token,
       refreshToken: refresh_token,
       expiresAt: expires_in + created_at,
-      tokenType: token_type,
+      tokenType: token_type
     };
   }
 
