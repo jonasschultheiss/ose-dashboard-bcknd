@@ -1,4 +1,4 @@
-import { ConflictException, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import INetilionUser from 'src/netilion-request/interfaces/netilion-user.interface';
 import { EntityRepository, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -25,10 +25,40 @@ export class UsersRepository extends Repository<User> {
     }
   }
 
-  async userFinishedSetup(id: number) {
+  async finishedInitialSetup(id: number): Promise<User> {
     const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with ${id} not found`);
+    }
+
     user.finishedInitialSetup = true;
-    await user.save();
-    return user;
+    try {
+      await user.save();
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getRefreshToken(id: number): Promise<string> {
+    const user = await this.findOne(id, {
+      select: ['refreshToken']
+    });
+
+    return user.refreshToken;
+  }
+
+  async setRefreshToken(id: number, refreshToken: string): Promise<void> {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User with ${id} not found`);
+    }
+
+    user.refreshToken = refreshToken;
+    try {
+      await user.save();
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 }

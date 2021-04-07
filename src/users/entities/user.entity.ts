@@ -12,6 +12,6 @@ export class User extends BaseEntity {
   @Column()
   finishedInitialSetup: boolean;
 
-  @Column()
+  @Column({ select: false })
   refreshToken: string;
 }

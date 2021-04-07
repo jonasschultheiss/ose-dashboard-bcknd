@@ -23,4 +23,8 @@ export class UsersService {
   async findOne(id: number): Promise<User> {
     return this.usersRepository.findOne(id);
   }
+
+  async finishedInitialSetup(id: number) {
+    return this.usersRepository.finishedInitialSetup(id);
+  }
 }
