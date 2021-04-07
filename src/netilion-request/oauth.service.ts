@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Cache } from 'cache-manager';
@@ -10,16 +10,39 @@ import IToken from './interfaces/token.interface';
 export class OAuthService {
   constructor(private configService: ConfigService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
+  // make axios instance
+  async getInitialAccessToken(code: string): Promise<IToken> {
+    const { authurl, redirectURI, clientId, clientSecret } = this.configService.get('netilion');
+    let res;
+    try {
+      res = await axios({
+        method: 'post',
+        url: `${authurl}/oauth/token`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        params: {
+          client_id: clientId,
+          client_secret: clientSecret,
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: redirectURI
+        }
+      });
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
+
+    return this.parseToken(res.data);
+  }
+
   async getAccessToken(credentials: ICredentials) {
     let token = null;
     const cachedToken: IToken = await this.cacheManager.get('cached_Token');
     if (this.isTokenValid(cachedToken)) {
-      console.log('old');
       token = cachedToken;
     } else {
-      console.log('new');
       token = await this.getNewAccessToken(credentials);
-      console.log('🚀 ~ file: oauth.service.ts ~ line 25 ~ OAuthService ~ getAccessToken ~ token', token);
       // await this.cacheManager.set('cached_Token', token);
     }
 
