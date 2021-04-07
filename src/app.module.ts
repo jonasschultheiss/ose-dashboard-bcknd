@@ -2,13 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
 import { AssetsModule } from './assets/assets.module';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 import { ModelsModule } from './models/models.module';
 import { NetilionRequestModule } from './netilion-request/netilion-request.module';
 import { ProductsModule } from './products/products.module';
 import { StatusModule } from './status/status.module';
 import { TagsModule } from './tags/tags.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -35,9 +38,11 @@ import { TagsModule } from './tags/tags.module';
     StatusModule,
     TagsModule,
     ModelsModule,
-    NetilionRequestModule
+    NetilionRequestModule,
+    AuthModule,
+    UsersModule
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: []
 })
 export class AppModule {}

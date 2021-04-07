@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import ICredentials from 'src/netilion-request/interfaces/credentials.interface';
-import IRequestCredentials from 'src/netilion-request/interfaces/request-credentials.interface';
 import IToken from 'src/netilion-request/interfaces/token.interface';
 import { NetilionRequestService } from 'src/netilion-request/netilion-request.service';
 import { OAuthService } from 'src/netilion-request/oauth.service';
@@ -28,14 +27,14 @@ export class ModelsService {
     }
     console.log('🚀 ~ file: models.service.ts ~ line 28 ~ ModelsService ~ create ~ token', token);
 
-    const requestCredentials: IRequestCredentials = {
-      clientId: client_id,
-      accessToken: token.accessToken,
-      tokenType: token.tokenType
-    };
+    // const requestCredentials: IRequestCredentials = {
+    //   clientId: client_id,
+    //   accessToken: token.accessToken,
+    //   tokenType: token.tokenType
+    // };
 
     console.log('token', token);
-    const technicalUser = await this.netilionRequestService.getTechnicalUser(requestCredentials, username);
+    // const technicalUser = await this.netilionRequestService.getTechnicalUser(requestCredentials, username);
 
     // then try get get technical user id
     // try create a new model with technical user id
