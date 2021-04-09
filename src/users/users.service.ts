@@ -27,4 +27,8 @@ export class UsersService {
   async finishedInitialSetup(id: number) {
     return this.usersRepository.finishedInitialSetup(id);
   }
+
+  async getRefreshToken(id: number) {
+    return this.usersRepository.getRefreshToken(id);
+  }
 }

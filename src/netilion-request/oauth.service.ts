@@ -2,7 +2,7 @@ import { CACHE_MANAGER, Inject, Injectable, UnauthorizedException } from '@nestj
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Cache } from 'cache-manager';
-import ICredentials from './interfaces/credentials.interface';
+import { User } from 'src/users/entities/user.entity';
 import ITokenResponse from './interfaces/token-response.interface';
 import IToken from './interfaces/token.interface';
 
@@ -10,7 +10,6 @@ import IToken from './interfaces/token.interface';
 export class OAuthService {
   constructor(private configService: ConfigService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
-  // make axios instance
   async getInitialAccessToken(code: string): Promise<IToken> {
     const { authurl, redirectURI, clientId, clientSecret } = this.configService.get('netilion');
     let res;
@@ -36,14 +35,15 @@ export class OAuthService {
     return this.parseToken(res.data);
   }
 
-  async getAccessToken(credentials: ICredentials) {
+  async getAccessToken(user: User) {
+    const { id, refreshToken } = user;
     let token = null;
-    const cachedToken: IToken = await this.cacheManager.get('cached_Token');
+    const cachedToken: IToken = await this.cacheManager.get(`cached_Token_${id}`);
     if (this.isTokenValid(cachedToken)) {
       token = cachedToken;
     } else {
-      token = await this.getNewAccessToken(credentials);
-      // await this.cacheManager.set('cached_Token', token);
+      token = await this.refreshAccessToken(refreshToken);
+      await this.cacheManager.set(`cached_Token_${id}`, token);
     }
 
     return token;
@@ -53,22 +53,29 @@ export class OAuthService {
     return token && this.datenow() <= token.expiresAt - 650;
   }
 
-  private async getNewAccessToken(credentials: ICredentials): Promise<IToken> {
-    const url = this.configService.get('netilion.authurl');
-
-    const res = await axios({
-      method: 'post',
-      url: `${url}/oauth/token`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      params: { ...credentials, grant_type: 'password' }
-    });
+  private async refreshAccessToken(refreshToken: string) {
+    const { authurl, clientId, clientSecret } = this.configService.get('netilion');
+    let res;
+    try {
+      res = await axios({
+        method: 'post',
+        url: `${authurl}/oauth/token`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        params: {
+          client_id: clientId,
+          client_secret: clientSecret,
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken
+        }
+      });
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
 
     return this.parseToken(res.data);
   }
-
-  // refreshAccessToken() {}
 
   private parseToken(data: ITokenResponse): IToken {
     const { access_token, refresh_token, expires_in, created_at, token_type } = data;
