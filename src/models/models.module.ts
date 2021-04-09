@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AssetsModule } from 'src/assets/assets.module';
 import { NetilionRequestModule } from 'src/netilion-request/netilion-request.module';
@@ -8,7 +9,13 @@ import { ModelsRepository } from './models.repository';
 import { ModelsService } from './models.service';
 
 @Module({
-  imports: [NetilionRequestModule, UsersModule, AssetsModule, TypeOrmModule.forFeature([ModelsRepository])],
+  imports: [
+    NetilionRequestModule,
+    ConfigModule,
+    UsersModule,
+    AssetsModule,
+    TypeOrmModule.forFeature([ModelsRepository])
+  ],
   controllers: [ModelsController],
   providers: [ModelsService]
 })

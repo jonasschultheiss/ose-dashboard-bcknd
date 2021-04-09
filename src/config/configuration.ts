@@ -14,13 +14,10 @@ export default (): IConfiguration => ({
     ttl: parseInt(process.env.REDIS_TTL, 10),
     url: process.env.REDIS_URL
   },
-  api: {
-    authorization: process.env.API_AUTHORIZATION,
-    key: process.env.API_KEY
-  },
   security: {
     jwtSecret: process.env.SECURITY_JWT_SECRET,
     jwtExpiresIn: process.env.SECURITY_JWT_EXPIRES_IN,
     encryptionSecret: process.env.SECURITY_ENCRYPTION_SECRET
-  }
+  },
+  geolocationApiKey: process.env.GEOLOCATION_API_KEY
 });
