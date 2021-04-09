@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
+import axios from 'axios';
 import { AssetsService } from 'src/assets/assets.service';
 import { NetilionResponseDto } from 'src/assets/dto/netilion-response.dto';
 import { NetilionRequestService } from 'src/netilion-request/netilion-request.service';
@@ -8,6 +10,7 @@ import { OAuthService } from 'src/netilion-request/oauth.service';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { CreateModelDto } from './dto/create-model.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
 import { Model } from './entities/model.entity';
 import { ModelsRepository } from './models.repository';
@@ -17,6 +20,7 @@ export class ModelsService {
   constructor(
     @InjectRepository(ModelsRepository)
     private readonly modelsRepository: ModelsRepository,
+    private readonly configService: ConfigService,
     private oauthService: OAuthService,
     private netilionRequestService: NetilionRequestService,
     private assetsService: AssetsService,
@@ -67,5 +71,24 @@ export class ModelsService {
 
   private async fetchAllAssets(user: User): Promise<NetilionResponseDto[]> {
     return this.netilionRequestService.getAssets(user);
+  }
+
+  async autoCompleteAddress(query: string) {
+    const apiKey = this.configService.get('geolocationApiKey');
+    const { data } = await axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${query}&apiKey=${apiKey}`);
+    return data;
+  }
+
+  async updateLocation(id: string, updateLocationDto: UpdateLocationDto): Promise<Model> {
+    return this.modelsRepository.updateLocation(id, updateLocationDto);
+  }
+
+  async getModelLocation(id: number) {
+    const model = await this.findOne(id);
+    const apiKey = this.configService.get('geolocationApiKey');
+    const { data } = await axios.get(
+      `https://lookup.search.hereapi.com/v1/lookup?id=${model.location}&apiKey=${apiKey}`
+    );
+    return data;
   }
 }

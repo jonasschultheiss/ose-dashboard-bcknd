@@ -8,4 +8,8 @@ export class CreateModelDto {
   @IsString()
   @IsNotEmpty()
   readonly description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly location: string;
 }

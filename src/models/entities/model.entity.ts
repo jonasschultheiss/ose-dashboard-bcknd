@@ -14,6 +14,9 @@ export class Model extends BaseEntity {
   @Column()
   description: string;
 
+  @Column({ nullable: true })
+  location: string;
+
   @OneToOne(() => User, user => user.model, { eager: true })
   @JoinColumn()
   owner: User;
