@@ -76,11 +76,19 @@ export class ModelsService {
   async autoCompleteAddress(query: string) {
     const apiKey = this.configService.get('geolocationApiKey');
     const { data } = await axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${query}&apiKey=${apiKey}`);
-
     return data;
   }
 
   async updateLocation(id: string, updateLocationDto: UpdateLocationDto): Promise<Model> {
     return this.modelsRepository.updateLocation(id, updateLocationDto);
+  }
+
+  async getModelLocation(id: number) {
+    const model = await this.findOne(id);
+    const apiKey = this.configService.get('geolocationApiKey');
+    const { data } = await axios.get(
+      `https://lookup.search.hereapi.com/v1/lookup?id=${model.location}&apiKey=${apiKey}`
+    );
+    return data;
   }
 }

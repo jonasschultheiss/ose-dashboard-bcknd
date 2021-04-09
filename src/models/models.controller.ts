@@ -56,6 +56,11 @@ export class ModelsController {
     return this.modelsService.autoCompleteAddress(q);
   }
 
+  @Get('models/:id/location')
+  async getModelLocation(@Param('id') id: string) {
+    return this.modelsService.getModelLocation(+id);
+  }
+
   @Put('models/:id/location')
   @UseGuards(JwtAuthGuard)
   async updateLocation(@Param('id') id: string, @Body(ValidationPipe) UpdateLocationDto): Promise<Model> {
