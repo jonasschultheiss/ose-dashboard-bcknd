@@ -1,3 +1,4 @@
+import { Model } from 'src/models/entities/model.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import { Tag } from 'src/tags/entities/tag.entity';
@@ -29,4 +30,7 @@ export class Asset extends BaseEntity {
   @ManyToOne(() => Tag, tag => tag.assets, { eager: true })
   @JoinTable()
   tag: Tag;
+
+  @ManyToOne(() => Model, model => model.assets)
+  model: Model;
 }

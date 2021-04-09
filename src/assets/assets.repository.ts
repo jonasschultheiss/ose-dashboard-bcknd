@@ -1,4 +1,5 @@
 import { ConflictException, InternalServerErrorException } from '@nestjs/common';
+import { Model } from 'src/models/entities/model.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import { Tag } from 'src/tags/entities/tag.entity';
@@ -13,7 +14,8 @@ export class AssetsRepository extends Repository<Asset> {
     netilionResponseDto: NetilionResponseDto,
     status: Status,
     product: Product,
-    tag: Tag
+    tag: Tag,
+    model: Model
   ): Promise<Asset> {
     const { id, serial_number, production_date, last_seen_at } = netilionResponseDto;
     const months = getMonths();
@@ -31,6 +33,7 @@ export class AssetsRepository extends Repository<Asset> {
     asset.status = status;
     asset.product = product;
     asset.tag = tag;
+    asset.model = model;
     try {
       await asset.save();
       return asset;
@@ -41,6 +44,10 @@ export class AssetsRepository extends Repository<Asset> {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  async getAssetsOfModel(modelId: number): Promise<Asset[]> {
+    return this.createQueryBuilder('asset').where('asset.modelId = :id', { id: modelId }).getMany();
   }
 
   async updateAsset(

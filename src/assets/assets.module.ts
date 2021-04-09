@@ -17,6 +17,7 @@ import { AssetsService } from './assets.service';
     TagsModule
   ],
   controllers: [AssetsController],
-  providers: [AssetsService]
+  providers: [AssetsService],
+  exports: [AssetsService]
 })
 export class AssetsModule {}
