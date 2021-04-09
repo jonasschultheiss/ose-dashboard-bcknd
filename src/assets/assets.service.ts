@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Model } from 'src/models/entities/model.entity';
 import { NetilionRequestService } from 'src/netilion-request/netilion-request.service';
 import { ProductsService } from 'src/products/products.service';
 import { StatusService } from 'src/status/status.service';
@@ -20,14 +20,6 @@ export class AssetsService {
     private readonly tagService: TagsService
   ) {}
 
-  @Cron('30 * * * * *')
-  async handleCron() {
-    const assets: NetilionResponseDto[] = await this.netilionRequestService.getAssets();
-    assets.map(asset => {
-      this.createOrUpdateAsset(asset);
-    });
-  }
-
   async findAll(): Promise<Asset[]> {
     return this.assetsRepository.find();
   }
@@ -41,7 +33,7 @@ export class AssetsService {
     return asset;
   }
 
-  private async createOrUpdateAsset(netilionResponseDto: NetilionResponseDto): Promise<void> {
+  async createOrUpdateAsset(netilionResponseDto: NetilionResponseDto, model: Model): Promise<void> {
     const asset = await this.assetsRepository.findOne(netilionResponseDto.id);
     const status = await this.statusService.getOrCreateStatus(netilionResponseDto.status);
     const product = await this.productService.getOrCreateProduct(netilionResponseDto.product);
@@ -50,7 +42,11 @@ export class AssetsService {
     if (asset) {
       await this.assetsRepository.updateAsset(netilionResponseDto, status, product, tag);
     } else {
-      await this.assetsRepository.createAsset(netilionResponseDto, status, product, tag);
+      await this.assetsRepository.createAsset(netilionResponseDto, status, product, tag, model);
     }
+  }
+
+  async getAssetsOfModel(modelId: number): Promise<Asset[]> {
+    return this.assetsRepository.getAssetsOfModel(modelId);
   }
 }

@@ -1,4 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { AssetsService } from 'src/assets/assets.service';
+import { Asset } from 'src/assets/entities/asset.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/users/entities/user.entity';
 import { CreateModelDto } from './dto/create-model.dto';
@@ -8,7 +10,7 @@ import { ModelsService } from './models.service';
 
 @Controller('models')
 export class ModelsController {
-  constructor(private readonly modelsService: ModelsService) {}
+  constructor(private readonly modelsService: ModelsService, private assetsService: AssetsService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -25,6 +27,11 @@ export class ModelsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.modelsService.findOne(+id);
+  }
+
+  @Get(':id/assets')
+  getAllAssets(@Param('id') id: string): Promise<Asset[]> {
+    return this.assetsService.getAssetsOfModel(+id);
   }
 
   @Patch(':id')

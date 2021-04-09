@@ -24,11 +24,19 @@ export class UsersService {
     return this.usersRepository.findOne(id);
   }
 
+  async findOneWithRefreshToken(id: number): Promise<User> {
+    return this.usersRepository.findOneWithRefreshToken(id);
+  }
+
   async finishedInitialSetup(id: number) {
     return this.usersRepository.finishedInitialSetup(id);
   }
 
   async getRefreshToken(id: number) {
     return this.usersRepository.getRefreshToken(id);
+  }
+
+  async saveRefreshToken(id: number, refreshToken: string): Promise<void> {
+    return this.usersRepository.saveRefreshToken(id, refreshToken);
   }
 }

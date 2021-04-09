@@ -3,12 +3,17 @@ import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Cache } from 'cache-manager';
 import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 import ITokenResponse from './interfaces/token-response.interface';
 import IToken from './interfaces/token.interface';
 
 @Injectable()
 export class OAuthService {
-  constructor(private configService: ConfigService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    private configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private usersService: UsersService
+  ) {}
 
   async getInitialAccessToken(code: string): Promise<IToken> {
     const { authurl, redirectURI, clientId, clientSecret } = this.configService.get('netilion');
@@ -35,14 +40,14 @@ export class OAuthService {
     return this.parseToken(res.data);
   }
 
-  async getAccessToken(user: User) {
-    const { id, refreshToken } = user;
+  async getAccessToken(user: User): Promise<IToken> {
+    const { id } = user;
     let token = null;
     const cachedToken: IToken = await this.cacheManager.get(`cached_Token_${id}`);
     if (this.isTokenValid(cachedToken)) {
       token = cachedToken;
     } else {
-      token = await this.refreshAccessToken(refreshToken);
+      token = await this.refreshAccessToken(user);
       await this.cacheManager.set(`cached_Token_${id}`, token);
     }
 
@@ -53,8 +58,9 @@ export class OAuthService {
     return token && this.datenow() <= token.expiresAt - 650;
   }
 
-  private async refreshAccessToken(refreshToken: string) {
+  private async refreshAccessToken(user: User) {
     const { authurl, clientId, clientSecret } = this.configService.get('netilion');
+    const refreshToken = await this.usersService.getRefreshToken(user.id);
     let res;
     try {
       res = await axios({
@@ -74,7 +80,10 @@ export class OAuthService {
       throw new UnauthorizedException();
     }
 
-    return this.parseToken(res.data);
+    const token = this.parseToken(res.data);
+    this.usersService.saveRefreshToken(user.id, token.refreshToken);
+    token.refreshToken = undefined;
+    return token;
   }
 
   private parseToken(data: ITokenResponse): IToken {
