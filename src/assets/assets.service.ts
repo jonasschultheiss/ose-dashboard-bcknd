@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Mesh } from 'src/meshes/entities/mesh.entity';
 import { Model } from 'src/models/entities/model.entity';
 import { NetilionRequestService } from 'src/netilion-request/netilion-request.service';
 import { ProductsService } from 'src/products/products.service';
@@ -8,6 +9,7 @@ import { TagsService } from 'src/tags/tags.service';
 import { AssetsRepository } from './assets.repository';
 import { NetilionResponseDto } from './dto/netilion-response.dto';
 import { Asset } from './entities/asset.entity';
+import { LinkingStatus } from './enums/linkingStatus.enum';
 
 @Injectable()
 export class AssetsService {
@@ -31,6 +33,14 @@ export class AssetsService {
     }
 
     return asset;
+  }
+
+  async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus) {
+    return this.assetsRepository.link(id, mesh, linkingStatus);
+  }
+
+  async changeLinkingStatus(id: number, linkingStatus: LinkingStatus) {
+    return this.assetsRepository.changeLinkingStatus(id, linkingStatus);
   }
 
   async createOrUpdateAsset(netilionResponseDto: NetilionResponseDto, model: Model): Promise<void> {

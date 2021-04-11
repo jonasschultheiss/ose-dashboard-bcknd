@@ -16,6 +16,7 @@ import { Asset } from 'src/assets/entities/asset.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/users/entities/user.entity';
 import { CreateModelDto } from './dto/create-model.dto';
+import { ManualLinkDto } from './dto/manual-link.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
 import { Model } from './entities/model.entity';
 import { ModelsService } from './models.service';
@@ -46,7 +47,24 @@ export class ModelsController {
     return this.assetsService.getAssetsOfModel(+id);
   }
 
+  @Post('models/:id/autolink')
+  // @UseGuards(JwtAuthGuard)
+  autoLinkAssets(@Param('id') id: string) {
+    return this.modelsService.autoLinkAssets(+id);
+  }
+
+  @Post('/models/:modelId/assets/:assetId/link')
+  // @UseGuards(JwtAuthGuard)
+  manuallyLinkAsset(
+    @Param('modelId') modelId: string,
+    @Param('assetId') assetId: string,
+    @Body(ValidationPipe) manualLinkDto: ManualLinkDto
+  ) {
+    return this.modelsService.manuallyLinkAsset(+modelId, +assetId, manualLinkDto);
+  }
+
   @Patch('models/:id')
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto) {
     return this.modelsService.update(+id, updateModelDto);
   }
