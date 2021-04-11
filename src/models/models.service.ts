@@ -12,6 +12,7 @@ import { OAuthService } from 'src/netilion-request/oauth.service';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { CreateModelDto } from './dto/create-model.dto';
+import { ManualLinkDto } from './dto/manual-link.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
 import { Model } from './entities/model.entity';
@@ -41,15 +42,26 @@ export class ModelsService {
     }
   }
 
+  async manuallyLinkAsset(modelId, assetId, manualLinkDto: ManualLinkDto) {
+    const assets = await this.assetsService.getAssetsOfModel(modelId);
+    const { id: confirmedId } = assets.find(element => element.id === assetId);
+    const mesh = await this.meshesService.findOne(manualLinkDto.name);
+    if (confirmedId && confirmedId) {
+      await this.assetsService.link(confirmedId, mesh, LinkingStatus.MANUALLY_LINKED);
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
   async autoLinkAssets(id: number) {
     const assets = await this.assetsService.getAssetsOfModel(id);
     for await (const asset of assets) {
       const { id } = asset;
-      await this.linkAsset(id);
+      await this.autoLinkAsset(id);
     }
   }
 
-  async linkAsset(id: number) {
+  private async autoLinkAsset(id: number) {
     const asset = await this.assetsService.findOne(id);
     if (asset && asset.tag) {
       const mesh = await this.meshesService.findOne(asset.tag.name);

@@ -49,7 +49,10 @@ export class AssetsRepository extends Repository<Asset> {
   }
 
   async getAssetsOfModel(modelId: number): Promise<Asset[]> {
-    return this.createQueryBuilder('asset').where('asset.modelId = :id', { id: modelId }).getMany();
+    return this.createQueryBuilder('asset')
+      .where('asset.modelId = :id', { id: modelId })
+      .leftJoinAndSelect('asset.mesh', 'mesh')
+      .getMany();
   }
 
   async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus) {
