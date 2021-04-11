@@ -39,4 +39,12 @@ export class UsersService {
   async saveRefreshToken(id: number, refreshToken: string): Promise<void> {
     return this.usersRepository.saveRefreshToken(id, refreshToken);
   }
+
+  async getUserWithModel(id: number): Promise<User> {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .leftJoinAndSelect('user.model', 'model')
+      .getOne();
+  }
 }

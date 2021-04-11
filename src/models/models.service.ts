@@ -114,8 +114,26 @@ export class ModelsService {
 
   async autoCompleteAddress(query: string) {
     const apiKey = this.configService.get('geolocationApiKey');
-    const { data } = await axios.get(`https://geocode.search.hereapi.com/v1/geocode?q=${query}&apiKey=${apiKey}`);
-    return data;
+    try {
+      const { data } = await axios.get(
+        `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURI(query)}&apiKey=${apiKey}`
+      );
+      return data;
+    } catch (error) {
+      return { items: [] };
+    }
+  }
+
+  async getMapView(lat: number, long: number) {
+    const apiKey = this.configService.get('geolocationApiKey');
+    const response = await axios.get(
+      `https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=${apiKey}&c=${lat},${long}&z=16&t=3&ppi=200&h=375&w=500`,
+      {
+        responseType: 'arraybuffer'
+      }
+    );
+
+    return response.data;
   }
 
   async updateLocation(id: string, updateLocationDto: UpdateLocationDto): Promise<Model> {

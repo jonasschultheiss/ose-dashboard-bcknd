@@ -2,15 +2,18 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   Patch,
   Post,
   Put,
   Query,
   Request,
+  Res,
   UseGuards,
   ValidationPipe
 } from '@nestjs/common';
+import { Response } from 'express';
 import { AssetsService } from 'src/assets/assets.service';
 import { Asset } from 'src/assets/entities/asset.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -72,6 +75,14 @@ export class ModelsController {
   @Get('geolocation')
   async autoCompleteAddress(@Query('q') q: string) {
     return this.modelsService.autoCompleteAddress(q);
+  }
+
+  @Get('mapview')
+  @Header('Content-Type', 'image/jpeg; charset=UTF-8')
+  async getMapView(@Query('lat') lat: string, @Query('long') long: string, @Res() response: Response) {
+    const stream = await this.modelsService.getMapView(+lat, +long);
+
+    response.end(Buffer.from(stream, 'base64'));
   }
 
   @Get('models/:id/location')
