@@ -46,7 +46,14 @@ export class ModelsController {
     return this.assetsService.getAssetsOfModel(+id);
   }
 
+  @Post('models/:id/autolink')
+  // @UseGuards(JwtAuthGuard)
+  autoLinkAssets(@Param('id') id: string) {
+    return this.modelsService.autoLinkAssets(+id);
+  }
+
   @Patch('models/:id')
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto) {
     return this.modelsService.update(+id, updateModelDto);
   }

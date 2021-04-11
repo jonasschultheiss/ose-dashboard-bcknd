@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AssetsModule } from './assets/assets.module';
 import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
+import { MeshesModule } from './meshes/meshes.module';
 import { ModelsModule } from './models/models.module';
 import { NetilionRequestModule } from './netilion-request/netilion-request.module';
 import { ProductsModule } from './products/products.module';
@@ -24,7 +25,7 @@ import { UsersModule } from './users/users.module';
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
         synchronize: false,
-        migrationsRun: true,
+        migrationsRun: false,
         logging: true,
         logger: 'file',
         retryAttempts: 10,
@@ -40,7 +41,8 @@ import { UsersModule } from './users/users.module';
     ModelsModule,
     NetilionRequestModule,
     AuthModule,
-    UsersModule
+    UsersModule,
+    MeshesModule
   ],
   controllers: [AppController],
   providers: []

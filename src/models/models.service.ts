@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { AssetsService } from 'src/assets/assets.service';
 import { NetilionResponseDto } from 'src/assets/dto/netilion-response.dto';
+import { LinkingStatus } from 'src/assets/enums/linkingStatus.enum';
+import { MeshesService } from 'src/meshes/meshes.service';
 import { NetilionRequestService } from 'src/netilion-request/netilion-request.service';
 import { OAuthService } from 'src/netilion-request/oauth.service';
 import { User } from 'src/users/entities/user.entity';
@@ -24,7 +26,8 @@ export class ModelsService {
     private oauthService: OAuthService,
     private netilionRequestService: NetilionRequestService,
     private assetsService: AssetsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private meshesService: MeshesService
   ) {}
 
   @Cron('*/30 * * * *')
@@ -34,6 +37,30 @@ export class ModelsService {
       for await (const model of models) {
         const user = await this.usersService.findOneWithRefreshToken(model.owner.id);
         await this.createOrUpdateAssets(user, model);
+      }
+    }
+  }
+
+  async autoLinkAssets(id: number) {
+    const assets = await this.assetsService.getAssetsOfModel(id);
+    for await (const asset of assets) {
+      const { id } = asset;
+      await this.linkAsset(id);
+    }
+  }
+
+  async linkAsset(id: number) {
+    const asset = await this.assetsService.findOne(id);
+    if (asset && asset.tag) {
+      const mesh = await this.meshesService.findOne(asset.tag.name);
+      if (mesh) {
+        try {
+          await this.assetsService.link(asset.id, mesh, LinkingStatus.AUTOMATICALLY_LINKED);
+        } catch (error) {
+          await this.assetsService.changeLinkingStatus(asset.id, LinkingStatus.AUTOMATIC_LINKING_FAILED);
+        }
+      } else {
+        await this.assetsService.changeLinkingStatus(asset.id, LinkingStatus.NOT_LINKED);
       }
     }
   }
