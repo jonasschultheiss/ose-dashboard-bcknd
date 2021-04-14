@@ -19,5 +19,7 @@ export default (): IConfiguration => ({
     jwtExpiresIn: process.env.SECURITY_JWT_EXPIRES_IN,
     encryptionSecret: process.env.SECURITY_ENCRYPTION_SECRET
   },
-  geolocationApiKey: process.env.GEOLOCATION_API_KEY
+  geolocationApiKey: process.env.GEOLOCATION_API_KEY,
+  permittedUserGroupId: parseInt(process.env.PERMITTED_USERGROUP_ID, 10),
+  permittedUserGroupName: process.env.PERMITTED_USERGROUP_NAME
 });

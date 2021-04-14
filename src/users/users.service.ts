@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Model } from 'src/models/entities/model.entity';
 import INetilionUser from 'src/netilion-request/interfaces/netilion-user.interface';
 import { User } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
@@ -38,5 +39,15 @@ export class UsersService {
 
   async saveRefreshToken(id: number, refreshToken: string): Promise<void> {
     return this.usersRepository.saveRefreshToken(id, refreshToken);
+  }
+
+  async getUserWithModel(id: number): Promise<Model> {
+    const { model } = await this.usersRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .leftJoinAndSelect('user.model', 'model')
+      .getOne();
+
+    return model;
   }
 }

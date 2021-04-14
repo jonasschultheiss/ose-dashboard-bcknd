@@ -44,7 +44,6 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     MeshesModule
   ],
-  controllers: [AppController],
-  providers: []
+  controllers: [AppController]
 })
 export class AppModule {}

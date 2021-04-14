@@ -8,12 +8,12 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"  --quiet",
+    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\"  --quiet --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -22,8 +22,7 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config .ormconfig.json",
     "typeorm:migrate": "yarn typeorm migration:generate -n",
     "typeorm:run": "yarn typeorm migration:run",
-    "doc:build": "compodoc -p tsconfig.json -t docs --theme stripe",
-    "doc:serve": "compodoc -p tsconfig.json -d docs -t --theme stripe -s"
+    "doc": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {
     "@compodoc/compodoc": "^1.1.11",
@@ -57,7 +56,7 @@
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",
     "@nestjs/schematics": "^7.2.7",
-    "@nestjs/testing": "^7.6.13",
+    "@nestjs/testing": "^7.6.15",
     "@types/cache-manager": "^3.4.0",
     "@types/cron": "^1.7.2",
     "@types/express": "^4.17.11",
@@ -68,6 +67,7 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
+    "compodoc": "^0.0.41",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",

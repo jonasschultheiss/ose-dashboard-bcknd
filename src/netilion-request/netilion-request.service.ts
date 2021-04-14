@@ -25,6 +25,21 @@ export class NetilionRequestService {
     return result.data;
   }
 
+  async getCurrentUsersGroup(token: IToken) {
+    const { url, clientId } = this.configService.get('netilion');
+    const { tokenType, accessToken } = token;
+    const permittedUserGroupName = this.configService.get('permittedUserGroupName');
+    const result = await axios.get(`${url}/usergroups?name=${permittedUserGroupName}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${tokenType} ${accessToken}`,
+        'Api-Key': clientId
+      }
+    });
+
+    return result.data;
+  }
+
   async getAssets(user: User) {
     const baseUrl = this.configService.get('netilion.url');
     const token = await this.oauthService.getAccessToken(user);

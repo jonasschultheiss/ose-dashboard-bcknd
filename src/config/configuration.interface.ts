@@ -9,4 +9,6 @@ export default interface IConfiguration {
   redis: IRedisConfiguration;
   security: ISecurityConfiguration;
   geolocationApiKey: string;
+  permittedUserGroupId: number;
+  permittedUserGroupName: string;
 }

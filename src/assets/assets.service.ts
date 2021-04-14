@@ -35,11 +35,11 @@ export class AssetsService {
     return asset;
   }
 
-  async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus) {
+  async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus): Promise<Asset> {
     return this.assetsRepository.link(id, mesh, linkingStatus);
   }
 
-  async changeLinkingStatus(id: number, linkingStatus: LinkingStatus) {
+  async changeLinkingStatus(id: number, linkingStatus: LinkingStatus): Promise<Asset> {
     return this.assetsRepository.changeLinkingStatus(id, linkingStatus);
   }
 

@@ -1,8 +1,7 @@
 import { Asset } from 'src/assets/entities/asset.entity';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, Unique } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity()
-@Unique(['name'])
 export class Tag extends BaseEntity {
   @PrimaryColumn()
   id: number;
