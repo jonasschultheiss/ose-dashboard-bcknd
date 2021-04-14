@@ -51,13 +51,13 @@ export class ModelsController {
   }
 
   @Post('models/:id/autolink')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   autoLinkAssets(@Param('id') id: string) {
     return this.modelsService.autoLinkAssets(+id);
   }
 
   @Post('/models/:modelId/assets/:assetId/link')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   manuallyLinkAsset(
     @Param('modelId') modelId: string,
     @Param('assetId') assetId: string,

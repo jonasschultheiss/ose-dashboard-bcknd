@@ -55,22 +55,24 @@ export class AssetsRepository extends Repository<Asset> {
       .getMany();
   }
 
-  async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus) {
+  async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus): Promise<Asset> {
     const asset = await this.findOne(id);
     asset.mesh = mesh;
     asset.linkingStatus = linkingStatus;
     try {
       await asset.save();
+      return asset;
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async changeLinkingStatus(id: number, linkingStatus: LinkingStatus) {
+  async changeLinkingStatus(id: number, linkingStatus: LinkingStatus): Promise<Asset> {
     const asset = await this.findOne(id);
     asset.linkingStatus = linkingStatus;
     try {
       await asset.save();
+      return asset;
     } catch (error) {
       throw new InternalServerErrorException();
     }

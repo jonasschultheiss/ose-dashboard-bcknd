@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Patch, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Model } from 'src/models/entities/model.entity';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -21,7 +22,7 @@ export class UsersController {
   }
 
   @Get(':id/model')
-  async getUserWithModel(@Param('id') id: string): Promise<User> {
+  async getUserWithModel(@Param('id') id: string): Promise<Model> {
     return this.usersService.getUserWithModel(+id);
   }
 }
