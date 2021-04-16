@@ -25,7 +25,7 @@ import { UsersModule } from './users/users.module';
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
         synchronize: false,
-        migrationsRun: false,
+        migrationsRun: true,
         logging: true,
         logger: 'file',
         retryAttempts: 10,
