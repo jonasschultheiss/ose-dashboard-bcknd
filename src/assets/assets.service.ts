@@ -48,7 +48,6 @@ export class AssetsService {
     const status = await this.statusService.getOrCreateStatus(netilionResponseDto.status);
     const product = await this.productService.getOrCreateProduct(netilionResponseDto.product);
     const tag = await this.tagService.getOrCreateTag(netilionResponseDto);
-
     if (asset) {
       await this.assetsRepository.updateAsset(netilionResponseDto, status, product, tag);
     } else {
