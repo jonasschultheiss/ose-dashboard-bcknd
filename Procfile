@@ -1,1 +1,1 @@
-web: yarn typeorm:run && yarn start:prod
+web: yarn start:prod
