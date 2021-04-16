@@ -1,7 +1,7 @@
 import { Asset } from 'src/assets/entities/asset.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
-@Entity()
+@Entity('meshes')
 @Unique(['name'])
 export class Mesh extends BaseEntity {
   @PrimaryGeneratedColumn()

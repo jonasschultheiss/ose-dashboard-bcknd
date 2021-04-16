@@ -2,7 +2,7 @@ import { Asset } from 'src/assets/entities/asset.entity';
 import { User } from 'src/users/entities/user.entity';
 import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
-@Entity()
+@Entity('models')
 @Unique(['id', 'name'])
 export class Model extends BaseEntity {
   @PrimaryGeneratedColumn()

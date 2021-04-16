@@ -1,7 +1,7 @@
 import { Asset } from 'src/assets/entities/asset.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity('products')
 export class Product extends BaseEntity {
   @PrimaryColumn()
   id: number;

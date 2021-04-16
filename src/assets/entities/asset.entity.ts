@@ -6,7 +6,7 @@ import { Tag } from 'src/tags/entities/tag.entity';
 import { BaseEntity, Column, Entity, JoinTable, ManyToOne, PrimaryColumn, Unique } from 'typeorm';
 import { LinkingStatus } from '../enums/linkingStatus.enum';
 
-@Entity()
+@Entity('assets')
 @Unique(['serialNumber'])
 export class Asset extends BaseEntity {
   @PrimaryColumn()

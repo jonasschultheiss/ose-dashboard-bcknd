@@ -1,7 +1,7 @@
 import { Model } from 'src/models/entities/model.entity';
 import { BaseEntity, Column, Entity, OneToOne, PrimaryColumn, Unique } from 'typeorm';
 
-@Entity()
+@Entity('users')
 @Unique(['id'])
 export class User extends BaseEntity {
   @PrimaryColumn()
