@@ -85,7 +85,7 @@ export class ModelsService {
 
   async create(createModelDto: CreateModelDto, user: User): Promise<Model> {
     const model = await this.modelsRepository.createModel(createModelDto, user);
-    this.createOrUpdateAssets(user, model);
+    await this.createOrUpdateAssets(user, model);
     return model;
   }
 
