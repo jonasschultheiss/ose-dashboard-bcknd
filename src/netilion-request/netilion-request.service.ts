@@ -1,47 +1,54 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import IRequestConfig from './interfaces/request-credentials.interface';
+import { User } from 'src/users/entities/user.entity';
+import INetilionUser from './interfaces/netilion-user.interface';
+import IToken from './interfaces/token.interface';
+import { OAuthService } from './oauth.service';
 
 @Injectable()
 export class NetilionRequestService {
-  constructor(private configService: ConfigService) {}
-  async getTechnicalUser(credentials: IRequestConfig, email: string) {
-    const { tokenType, accessToken, clientId } = credentials;
-    const url = this.configService.get('netilion.url');
-    let res;
-    try {
-      res = await axios.get(`${url}/technical_users?email=${encodeURIComponent(email)}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${tokenType} ${accessToken}`,
-          'Api-Key': clientId
-        }
-      });
-      res.data;
-    } catch (error) {
-      // console.log(
-      //   '🚀 ~ file: netilion-request.service.ts ~ line 21 ~ NetilionRequestService ~ getTechnicalUser ~ error',
-      //   error
-      // );
-    }
-    // console.log(
-    //   '🚀 ~ file: netilion-request.service.ts ~ line 17 ~ NetilionRequestService ~ getTechnicalUser ~ res',
-    //   res.data
-    // );
+  constructor(private oauthService: OAuthService, private configService: ConfigService) {}
+
+  async getCurrentUser(token: IToken): Promise<INetilionUser> {
+    const { url, clientId } = this.configService.get('netilion');
+    const { tokenType, accessToken } = token;
+
+    const result = await axios.get(`${url}/users/current`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${tokenType} ${accessToken}`,
+        'Api-Key': clientId
+      }
+    });
+
+    return result.data;
   }
 
-  async getAssets() {
+  async getCurrentUsersGroup(token: IToken) {
+    const { url, clientId } = this.configService.get('netilion');
+    const { tokenType, accessToken } = token;
+    const permittedUserGroupName = this.configService.get('permittedUserGroupName');
+    const result = await axios.get(`${url}/usergroups?name=${permittedUserGroupName}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${tokenType} ${accessToken}`,
+        'Api-Key': clientId
+      }
+    });
+
+    return result.data;
+  }
+
+  async getAssets(user: User) {
     const baseUrl = this.configService.get('netilion.url');
-    const authorization = this.configService.get('api.authorization');
-    const key = this.configService.get('api.key');
+    const token = await this.oauthService.getAccessToken(user);
     const query =
       'per_page=100&include=status%2C%20pictures%2C%20product%2C%20instrumentations%2C%20product.manufacturer';
     const res = await axios.get(`${baseUrl}/assets?${query}`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${authorization}`,
-        'Api-Key': key
+        Authorization: `Bearer ${token.accessToken}`
       }
     });
 

@@ -1,10 +1,13 @@
 import { ConflictException, InternalServerErrorException } from '@nestjs/common';
+import { Mesh } from 'src/meshes/entities/mesh.entity';
+import { Model } from 'src/models/entities/model.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import { Tag } from 'src/tags/entities/tag.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { NetilionResponseDto } from './dto/netilion-response.dto';
 import { Asset } from './entities/asset.entity';
+import { LinkingStatus } from './enums/linkingStatus.enum';
 import getMonths from './utils/getMonths.util';
 
 @EntityRepository(Asset)
@@ -13,7 +16,8 @@ export class AssetsRepository extends Repository<Asset> {
     netilionResponseDto: NetilionResponseDto,
     status: Status,
     product: Product,
-    tag: Tag
+    tag: Tag,
+    model: Model
   ): Promise<Asset> {
     const { id, serial_number, production_date, last_seen_at } = netilionResponseDto;
     const months = getMonths();
@@ -31,6 +35,7 @@ export class AssetsRepository extends Repository<Asset> {
     asset.status = status;
     asset.product = product;
     asset.tag = tag;
+    asset.model = model;
     try {
       await asset.save();
       return asset;
@@ -40,6 +45,36 @@ export class AssetsRepository extends Repository<Asset> {
       } else {
         throw new InternalServerErrorException();
       }
+    }
+  }
+
+  async getAssetsOfModel(modelId: number): Promise<Asset[]> {
+    return this.createQueryBuilder('asset')
+      .where('asset.modelId = :id', { id: modelId })
+      .leftJoinAndSelect('asset.mesh', 'mesh')
+      .getMany();
+  }
+
+  async link(id: number, mesh: Mesh, linkingStatus: LinkingStatus): Promise<Asset> {
+    const asset = await this.findOne(id);
+    asset.mesh = mesh;
+    asset.linkingStatus = linkingStatus;
+    try {
+      await asset.save();
+      return asset;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async changeLinkingStatus(id: number, linkingStatus: LinkingStatus): Promise<Asset> {
+    const asset = await this.findOne(id);
+    asset.linkingStatus = linkingStatus;
+    try {
+      await asset.save();
+      return asset;
+    } catch (error) {
+      throw new InternalServerErrorException();
     }
   }
 

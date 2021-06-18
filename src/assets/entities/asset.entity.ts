@@ -1,9 +1,12 @@
+import { Mesh } from 'src/meshes/entities/mesh.entity';
+import { Model } from 'src/models/entities/model.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { Status } from 'src/status/entities/status.entity';
 import { Tag } from 'src/tags/entities/tag.entity';
 import { BaseEntity, Column, Entity, JoinTable, ManyToOne, PrimaryColumn, Unique } from 'typeorm';
+import { LinkingStatus } from '../enums/linkingStatus.enum';
 
-@Entity()
+@Entity('assets')
 @Unique(['serialNumber'])
 export class Asset extends BaseEntity {
   @PrimaryColumn()
@@ -29,4 +32,14 @@ export class Asset extends BaseEntity {
   @ManyToOne(() => Tag, tag => tag.assets, { eager: true })
   @JoinTable()
   tag: Tag;
+
+  @ManyToOne(() => Mesh, mesh => mesh.assets, { eager: true })
+  @JoinTable()
+  mesh: Mesh;
+
+  @ManyToOne(() => Model, model => model.assets)
+  model: Model;
+
+  @Column({ type: 'enum', enum: LinkingStatus, default: LinkingStatus.NOT_LINKED })
+  linkingStatus: LinkingStatus;
 }

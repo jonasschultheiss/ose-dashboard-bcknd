@@ -1,7 +1,7 @@
 import { Asset } from 'src/assets/entities/asset.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, Unique } from 'typeorm';
 
-@Entity()
+@Entity('status')
 @Unique(['code', 'name'])
 export class Status extends BaseEntity {
   @PrimaryColumn()

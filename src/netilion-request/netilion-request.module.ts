@@ -1,11 +1,13 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
+import { UsersModule } from 'src/users/users.module';
 import { NetilionRequestService } from './netilion-request.service';
 import { OAuthService } from './oauth.service';
 
 @Module({
   imports: [
+    UsersModule,
     ConfigModule,
     CacheModule.registerAsync({
       imports: [ConfigModule],
