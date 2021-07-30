@@ -13,6 +13,8 @@ import { ProductsModule } from './products/products.module';
 import { StatusModule } from './status/status.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
+import { CryptoService } from './crypto/crypto.service';
+import { CryptoModule } from './crypto/crypto.module';
 
 @Module({
   imports: [
@@ -42,8 +44,10 @@ import { UsersModule } from './users/users.module';
     NetilionRequestModule,
     AuthModule,
     UsersModule,
-    MeshesModule
+    MeshesModule,
+    CryptoModule
   ],
-  controllers: [AppController]
+  controllers: [AppController],
+  providers: [CryptoService]
 })
 export class AppModule {}

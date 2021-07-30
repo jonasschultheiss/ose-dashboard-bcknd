@@ -110,7 +110,11 @@ export class ModelsService {
     const netilionResponses: NetilionResponseDto[] = await this.fetchAllAssets(user);
 
     for await (const asset of netilionResponses) {
-      await this.assetsService.createOrUpdateAsset(asset, model);
+      try {
+        await this.assetsService.createOrUpdateAsset(asset, model);
+      } catch (error) {
+        console.log(`Could not create or update asset with id: ${asset.id}}`);
+      }
     }
   }
 

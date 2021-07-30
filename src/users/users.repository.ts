@@ -48,20 +48,6 @@ export class UsersRepository extends Repository<User> {
     return user.refreshToken;
   }
 
-  async setRefreshToken(id: number, refreshToken: string): Promise<void> {
-    const user = await this.findOne(id);
-    if (!user) {
-      throw new NotFoundException(`User with ${id} not found`);
-    }
-
-    user.refreshToken = refreshToken;
-    try {
-      await user.save();
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
-
   async findOneWithRefreshToken(id: number): Promise<User> {
     return this.createQueryBuilder('user').addSelect('user.refreshToken').where('user.id = :id', { id }).getOne();
   }
