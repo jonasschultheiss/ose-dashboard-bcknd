@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CryptoService } from 'src/crypto/crypto.service';
 import { Model } from 'src/models/entities/model.entity';
 import INetilionUser from 'src/netilion-request/interfaces/netilion-user.interface';
 import { User } from './entities/user.entity';
@@ -9,13 +10,15 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(
     @InjectRepository(UsersRepository)
-    private readonly usersRepository: UsersRepository
+    private readonly usersRepository: UsersRepository,
+    private readonly cryptoService: CryptoService
   ) {}
 
   async getOrCreate(netilionUser: INetilionUser, refreshToken: string): Promise<User> {
     let user = await this.usersRepository.findOne(netilionUser.id);
     if (!user) {
-      user = await this.usersRepository.createUser(netilionUser, refreshToken);
+      const encryptedRefreshToken = this.cryptoService.encryptString(refreshToken);
+      user = await this.usersRepository.createUser(netilionUser, encryptedRefreshToken);
     }
 
     return user;
@@ -26,7 +29,9 @@ export class UsersService {
   }
 
   async findOneWithRefreshToken(id: number): Promise<User> {
-    return this.usersRepository.findOneWithRefreshToken(id);
+    const user = await this.usersRepository.findOneWithRefreshToken(id);
+    user.refreshToken = this.cryptoService.decryptString(user.refreshToken);
+    return user;
   }
 
   async finishedInitialSetup(id: number) {
@@ -34,11 +39,13 @@ export class UsersService {
   }
 
   async getRefreshToken(id: number) {
-    return this.usersRepository.getRefreshToken(id);
+    const refreshToken = await this.usersRepository.getRefreshToken(id);
+    return this.cryptoService.decryptString(refreshToken);
   }
 
   async saveRefreshToken(id: number, refreshToken: string): Promise<void> {
-    return this.usersRepository.saveRefreshToken(id, refreshToken);
+    const encryptedRefreshToken = this.cryptoService.encryptString(refreshToken);
+    return this.usersRepository.saveRefreshToken(id, encryptedRefreshToken);
   }
 
   async getUserWithModel(id: number): Promise<Model> {
@@ -49,5 +56,14 @@ export class UsersService {
       .getOne();
 
     return model;
+  }
+
+  async encryptAllTokens(): Promise<void> {
+    const users = await this.usersRepository.find();
+    users.forEach(async ({ id }) => {
+      const user = await this.usersRepository.findOneWithRefreshToken(id);
+      user.refreshToken = this.cryptoService.encryptString(user.refreshToken);
+      await user.save();
+    });
   }
 }

@@ -66,6 +66,12 @@ export class ModelsController {
     return this.modelsService.manuallyLinkAsset(+modelId, +assetId, manualLinkDto);
   }
 
+  // @Delete('/models/:modelId/assets/:assetId/link')
+  // @UseGuards(JwtAuthGuard)
+  // unlinkAsset(@Param('modelId') modelId: string, @Param('assetId') assetId: string) {
+  //   return this.modelsService.unlinkAsset(+modelId, +assetId);
+  // }
+
   @Patch('models/:id')
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto) {
