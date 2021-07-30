@@ -66,4 +66,12 @@ export class UsersService {
       await user.save();
     });
   }
+
+  test(): boolean {
+    const base = 'thisisMyPassword';
+    const encrypted = this.cryptoService.encryptString(base);
+    const decrypted = this.cryptoService.decryptString(encrypted);
+
+    return base === decrypted;
+  }
 }

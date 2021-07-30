@@ -22,7 +22,6 @@ export class AuthService {
     const permittedUserGroupId = this.configService.get('permittedUserGroupId');
     const { code } = loginDto;
     const token = await this.oauth2Service.getInitialAccessToken(code);
-    console.log('🚀 ~ file: auth.service.ts ~ line 25 ~ AuthService ~ login ~ token', token);
     const netilionUser = await this.netilionRequestService.getCurrentUser(token);
     const { usergroups } = await this.netilionRequestService.getCurrentUsersGroup(token);
     if (usergroups.length < 1 || usergroups[0].id !== permittedUserGroupId) {
