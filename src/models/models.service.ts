@@ -32,7 +32,7 @@ export class ModelsService {
     private meshesService: MeshesService
   ) {}
 
-  @Cron('*/1 * * * *')
+  @Cron('*/30 * * * *')
   async handleCron() {
     const models = await this.findAll();
     if (models) {

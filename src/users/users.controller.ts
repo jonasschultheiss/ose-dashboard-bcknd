@@ -25,13 +25,4 @@ export class UsersController {
   async getUserWithModel(@Param('id') id: string): Promise<Model> {
     return this.usersService.getUserWithModel(+id);
   }
-
-  @Get('encrypt')
-  async encryptAllTokens(): Promise<void> {
-    return this.usersService.encryptAllTokens();
-  }
-  @Get('test')
-  test(): boolean {
-    return this.usersService.test();
-  }
 }

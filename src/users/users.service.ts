@@ -57,21 +57,4 @@ export class UsersService {
 
     return model;
   }
-
-  async encryptAllTokens(): Promise<void> {
-    const users = await this.usersRepository.find();
-    users.forEach(async ({ id }) => {
-      const user = await this.usersRepository.findOneWithRefreshToken(id);
-      user.refreshToken = this.cryptoService.encryptString(user.refreshToken);
-      await user.save();
-    });
-  }
-
-  test(): boolean {
-    const base = 'thisisMyPassword';
-    const encrypted = this.cryptoService.encryptString(base);
-    const decrypted = this.cryptoService.decryptString(encrypted);
-
-    return base === decrypted;
-  }
 }
